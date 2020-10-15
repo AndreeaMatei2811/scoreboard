@@ -7,21 +7,24 @@ export default function AddPlayer({ addPlayerCallback }) {
     setName(event.target.value);
   };
 
-  const addClicked = () => {
+  const addClicked = (event) => {
     addPlayerCallback(name);
+    event.preventDefault();
   };
 
   return (
     <div>
       <p>
         New player
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={onNameChange}
-        />{" "}
-        <button onClick={addClicked}>ADD</button>
+        <form>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={onNameChange}
+          />{" "}
+          <button onClick={addClicked}>ADD</button>
+        </form>
       </p>
     </div>
   );

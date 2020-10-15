@@ -2,22 +2,15 @@ import React, { useState } from "react";
 import Player from "../../Components/Players/Player";
 import AddPlayer from "../AddPlayer";
 
-function compareScore(playerA, playerB) {
-  return playerB.score - playerA.score;
-}
-
-function compareName(playerA, playerB) {
-  return playerA.name.localeCompare(playerB.name);
-}
-
 export default function Scoreboard() {
   const [players, setPlayers] = useState([
-    { id: 1, name: "Andreea", score: 5 },
-    { id: 2, name: "Maria", score: 5 },
-    { id: 3, name: "Elena", score: 5 },
-    { id: 4, name: "Alina", score: 5 },
+    { id: 1, name: "Andreea", score: 0 },
+    { id: 2, name: "Maria", score: 0 },
+    { id: 3, name: "Elena", score: 0 },
+    { id: 4, name: "Alina", score: 0 },
   ]);
 
+  // sorting the players
   const [sortBy, setSortBy] = useState("name");
 
   const changeSorting = (event) => {
@@ -27,6 +20,21 @@ export default function Scoreboard() {
 
   const playersSorted = [...players];
 
+  function compareScore(playerA, playerB) {
+    return playerB.score - playerA.score;
+  }
+
+  function compareName(playerA, playerB) {
+    return playerA.name.localeCompare(playerB.name);
+  }
+
+  if (sortBy === "score") {
+    playersSorted.sort(compareScore);
+  } else {
+    playersSorted.sort(compareName);
+  }
+
+  // incrementing the score
   const incrementScore = (playerId) => {
     const newScore = players.map((player) => {
       if (player.id === playerId) {
@@ -38,6 +46,7 @@ export default function Scoreboard() {
     setPlayers(newScore);
   };
 
+  // reset all score
   const resetAllScore = () => {
     const updatePlayers = players.map((p) => {
       return { ...p, score: 0 };
@@ -45,12 +54,7 @@ export default function Scoreboard() {
     setPlayers(updatePlayers);
   };
 
-  if (sortBy === "score") {
-    playersSorted.sort(compareScore);
-  } else {
-    playersSorted.sort(compareName);
-  }
-
+  // add new player
   const addPlayerCallback = (name) => {
     const newPlayer = {
       id: players.length + 1,
